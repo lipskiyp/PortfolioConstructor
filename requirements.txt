@@ -1,0 +1,10 @@
+1. flask
+2. flask_session
+3. sqlalchemy
+4. datetime
+5. numpy
+6. pandas 
+7. requests
+8. csv
+9. uuid
+10. pytz

@@ -1,0 +1,45 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+    Backtest
+{% endblock %}
+
+{% block alerts %}
+    {% for error in errors %}
+        {% if error != [] %}
+            <!-- https://getbootstrap.com/docs/5.3/components/alerts/ -->
+            <div class="alert alert-warning" role="alert">
+                {{ error }}
+            </div>
+        {% endif %}
+    {% endfor %}
+{% endblock %}
+
+{% block body %}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <div class="input-group w-100 mx-auto"> 
+        <canvas id = 'BacktestChart' width = '1200' height = '800'>
+            <script>
+                var ctx = document.getElementById('BacktestChart').getContext('2d');
+                var lineChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: {{ labels | safe }},
+                        datasets: [
+                            {
+                                label: "Label",
+                                data: {{ values | safe }},
+                                fill: false,
+                                borderColor: 'rgb(75, 192, 192)',
+                                lineTension: 0.1
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: false
+                    }
+                });
+            </script>
+        </canvas>
+    </div>
+{% endblock %}
