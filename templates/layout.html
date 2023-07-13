@@ -14,7 +14,7 @@
         </title>
     </head>
     <body> 
-        <!-- https://getbootstrap.com/docs/5.2/components/navbar/ -->s
+        <!-- https://getbootstrap.com/docs/5.2/components/navbar/ -->
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container-fluid">
                 <a class="navbar-brand h1 mb-0" href="/constructor">Portfolio Constructor</a> 
@@ -28,9 +28,9 @@
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Constructor</a>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="/constructor">Fixed-Weight</a></li>
-                                <li><a class="dropdown-item" href="/constructorIV">Inverse-Volatility</a></li>
-                                <li><a class="dropdown-item" href="/constructorRB">Risk-Budget</a></li>
+                                {% for constructor in render_inputs.constructors.values() %}
+                                    <li><a class="dropdown-item" href="{{constructor.route}}">{{constructor.name}}</a></li>
+                                {% endfor %}
                                 <li><hr class="dropdown-divider"></li>
                                 <li><a class="dropdown-item" href="/constructor">Constructor</a></li>
                             </ul>

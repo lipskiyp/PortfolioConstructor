@@ -18,10 +18,7 @@ from input.check_input import *
 from database.db import db
 from quotes.get_quotes import get_quotes
 from backtest.metrics import Metrics
-
-
-portfolio_n = 5 # Max number of tickers in portfolio
-checked_n = 2 # Number of tickers to be "checked" by default 
+from render_inputs import render_inputs
 
 
 # Configure application
@@ -64,17 +61,26 @@ def about():
     return render_template('index.html')
 
 
-@app.route('/constructor', methods=['GET', 'POST'])
+@app.route('/constructor')
 def constructor():
+    # Render default constructor
+    return render_template('constructor.html', 
+                            render_inputs = render_inputs)
+
+
+@app.route('/constructorFW', methods=['GET', 'POST'])
+def constructorFW():
+    render_inputs_current = render_inputs.copy()
+    render_inputs_current['active_constructor'] = 'Fixed-Weight'
+
     if request.method == 'POST':
         # Check user input
-        input, errors = check_input_FW(request.form, portfolio_n)
+        input, errors = check_input_FW(request.form, render_inputs_current.portfolio_n)
 
         # If input invalid
         if input is None:
-            return render_template('constructorFW.html', 
-                                   portfolio_n = portfolio_n, 
-                                   checked_n = checked_n, 
+            return render_template('constructor.html', 
+                                   render_inputs = render_inputs_current,
                                    errors = errors)
         
         # Get quotes
@@ -82,10 +88,9 @@ def constructor():
                                             start = input['StartDate'] , 
                                             end = input['EndDate']) 
         if quotes is None:
-            return render_template('constructorFW.html', 
-                                    portfolio_n = portfolio_n, 
-                                    checked_n = checked_n, 
-                                    errors = quotes_errors)
+            return render_template('constructor.html', 
+                                   render_inputs = render_inputs_current,
+                                   errors = quotes_errors)
         
         # Add quotes errors
         errors += quotes_errors
@@ -101,22 +106,23 @@ def constructor():
                                 errors = errors)
 
     else: # if request.method == 'GET':
-        return render_template('constructorFW.html', 
-                               portfolio_n = portfolio_n, 
-                               checked_n = checked_n)
+        return render_template('constructor.html', 
+                               render_inputs = render_inputs_current)
 
 
 @app.route('/constructorIV', methods=['GET', 'POST'])
 def constructorIV():
+    render_inputs_current = render_inputs.copy()
+    render_inputs_current['active_constructor'] = 'Inverse-Volatility'
+
     if request.method == 'POST':
         # Check user input
-        input, errors = check_input_IV(request.form, portfolio_n)
+        input, errors = check_input_IV(request.form, render_inputs_current.portfolio_n)
 
         # If input invalid
         if input is None:
-            return render_template('constructorIV.html', 
-                                   portfolio_n = portfolio_n, 
-                                   checked_n = checked_n, 
+            return render_template('constructor.html', 
+                                   render_inputs = render_inputs_current,
                                    errors = errors)
         
         # Get quotes
@@ -125,10 +131,9 @@ def constructorIV():
                                             end = input['EndDate']) 
         
         if quotes is None:
-            return render_template('constructorIV.html', 
-                                    portfolio_n = portfolio_n, 
-                                    checked_n = checked_n, 
-                                    errors = quotes_errors)
+            return render_template('constructor.html', 
+                                   render_inputs = render_inputs_current,
+                                   errors = quotes_errors)
         
         # Add quotes errors
         errors += quotes_errors
@@ -145,22 +150,23 @@ def constructorIV():
                                 values = list(backtest.values), 
                                 errors = errors)
     else:
-        return render_template('constructorIV.html', 
-                               portfolio_n = portfolio_n, 
-                               checked_n = checked_n)
+        return render_template('constructor.html', 
+                               render_inputs = render_inputs_current)
 
 
 @app.route('/constructorRB', methods=['GET', 'POST'])
 def constructorRB():
+    render_inputs_current = render_inputs.copy()
+    render_inputs_current['active_constructor'] = 'Risk-Budget'
+
     if request.method == 'POST':
         # Check user input
-        input, errors = check_input_RB(request.form, portfolio_n)
+        input, errors = check_input_RB(request.form, render_inputs_current.portfolio_n)
 
         # If input invalid
         if input is None:
-            return render_template('constructorRB.html', 
-                                   portfolio_n = portfolio_n, 
-                                   checked_n = checked_n, 
+            return render_template('constructor.html', 
+                                   render_inputs = render_inputs_current,
                                    errors = errors)
         
         # Get quotes
@@ -169,10 +175,9 @@ def constructorRB():
                                             end = input['EndDate']) 
         
         if quotes is None:
-            return render_template('constructorRB.html', 
-                                    portfolio_n = portfolio_n, 
-                                    checked_n = checked_n, 
-                                    errors = quotes_errors)
+            return render_template('constructor.html', 
+                                   render_inputs = render_inputs_current,
+                                   errors = quotes_errors)
         
         # Add quotes errors
         errors += quotes_errors
@@ -190,7 +195,6 @@ def constructorRB():
                                 values = list(backtest.values), 
                                 errors = errors)
     else:
-        return render_template('constructorRB.html', 
-                               portfolio_n = portfolio_n, 
-                               checked_n = checked_n)
+        return render_template('constructor.html', 
+                               render_inputs = render_inputs_current)
 

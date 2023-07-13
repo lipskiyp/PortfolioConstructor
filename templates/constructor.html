@@ -6,15 +6,11 @@
 
 {% block tabs %}
     <ul class="nav nav-tabs nav-fill">
-        <li class="nav-item">
-            <a class="nav-link" href="/constructor">Fixed-Weight</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="/constructorIV">Inverse-Volatility</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="constructorRB">Risk-Budget</a>
-        </li>
+        {% for constructor in render_inputs.constructors.values() %}
+            <li class="nav-item">
+                <a {% if constructor.route == render_inputs.user_inputs[render_inputs.active_constructor].default_constructor.route %} class="nav-link active" aria-current="page" {% else %} class="nav-link" {% endif %} href="{{ constructor.route }}">{{ constructor.name }}</a>
+            </li>
+        {% endfor %}
     </ul>
 {% endblock %}
 
@@ -52,15 +48,17 @@
                 </h2>
                 <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse show">
                     <div class="accordion-body text-center">
-                        {% for ticker in range(portfolio_n) %}
+                        {% for ticker in range(render_inputs['portfolio_n']) %}
                             <div class="input-group mb-3 w-75 mx-auto">
                                 <div class="input-group-text">
-                                    <input class="form-check-input mt-0" type="checkbox" name="AddTicker{{loop.index}}" aria-label="Checkbox for following text input" {% if loop.index <= checked_n %}checked{% endif %}>
+                                    <input class="form-check-input mt-0" type="checkbox" name="AddTicker{{loop.index}}" aria-label="Checkbox for following text input" {% if loop.index <= render_inputs["checked_n"] %}checked{% endif %}>
                                 </div>    
                                 <span class="input-group-text">Ticker {{loop.index}}</span>
                                 <input type="text" aria-label="Ticker" placeholder="AAPL" name="Ticker{{loop.index}}" class="form-control">
-                                <span class="input-group-text">Risk-Budget {{loop.index}}</span>
-                                <input type="number" aria-label="Weight" step="0.01" min="0" placeholder="0.10" class="form-control" name="RiskBudget{{loop.index}}">
+                                {% if render_inputs.user_inputs[render_inputs.active_constructor].Weight.show == True %}
+                                    <span class="input-group-text"> {{ render_inputs.user_inputs[render_inputs.active_constructor].Weight.show_as }} {{ loop.index }}</span>
+                                    <input type="number" aria-label="Weight" step="0.01" min="0" placeholder="0.10" class="form-control" name="Weight{{loop.index}}">
+                                {% endif %}
                             </div>
                         {% endfor %}
                     </div>
@@ -74,23 +72,31 @@
                     <div class="accordion-body">
                         <!-- https://getbootstrap.com/docs/5.3/forms/checks-radios/ -->
                         <div class="input-group w-75 mx-auto"> 
-                            <span class="input-group-text">Volatility Lookback Window</span>
-                            <input type="number" aria-label="Volatility Lookback Window (Days)" name="VolLookbackWindow" class="form-control" step="1" min="1" placeholder="20"> 
-                            <span class="input-group-text">Volatility Lookback Offset</span>
-                            <input type="number" aria-label="Volatility Lookback Offset (Days)" name="VolLookbackOffset" class="form-control" step="1" min="1" placeholder="1">
+                            {% if render_inputs.user_inputs[render_inputs.active_constructor].VolLookbackWindow.show == True %}
+                                <span class="input-group-text">{{render_inputs.user_inputs[render_inputs.active_constructor].VolLookbackWindow.show_as}}</span>
+                                <input type="number" aria-label="Volatility Lookback Window (Days)" name="VolLookbackWindow" class="form-control" step="1" min="1" placeholder="20"> 
+                            {% endif %}
+                            {% if render_inputs.user_inputs[render_inputs.active_constructor].VolLookbackOffset.show == True %}
+                                <span class="input-group-text">{{render_inputs.user_inputs[render_inputs.active_constructor].VolLookbackOffset.show_as}}</span>
+                                <input type="number" aria-label="Volatility Lookback Offset (Days)" name="VolLookbackOffset" class="form-control" step="1" min="1" placeholder="1">
+                            {% endif %}
                             <!-- https://getbootstrap.com/docs/5.3/forms/select/  -->
-                            <span class="input-group-text">Rebalancing Frequency</span>
-                            <select class="form-select" aria-label="Rebalancing Frequency" name="RebalFreq">
-                                <option value="B" selected>Daily</option>
-                                <option value="Q">Quarterly</option>
-                                <option value="M">Monthly</option>
-                                <option value="W">Weekly</option>
-                            </select>
-                            <span class="input-group-text">Ignore Missing</span>
-                            <select class="form-select" aria-label="Ignore Missing" name="IgnoreMissing">
-                                <option value="False" selected>No</option>
-                                <option value="True">Yes</option>
-                            </select>
+                            {% if render_inputs.user_inputs[render_inputs.active_constructor].RebalFreq.show == True %}
+                                <span class="input-group-text">{{render_inputs.user_inputs[render_inputs.active_constructor].RebalFreq.show_as}}</span>
+                                <select class="form-select" aria-label="Rebalancing Frequency" name="RebalFreq">
+                                    <option value="B" selected>Daily</option>
+                                    <option value="Q">Quarterly</option>
+                                    <option value="M">Monthly</option>
+                                    <option value="W">Weekly</option>
+                                </select>
+                            {% endif %}
+                            {% if render_inputs.user_inputs[render_inputs.active_constructor].IgnoreMissing.show == True %}
+                                <span class="input-group-text">{{render_inputs.user_inputs[render_inputs.active_constructor].IgnoreMissing.show_as}}</span>
+                                <select class="form-select" aria-label="Ignore Missing" name="IgnoreMissing">
+                                    <option value="False" selected>No</option>
+                                    <option value="True">Yes</option>
+                                </select>
+                            {% endif %}
                         </div>  
                     </div>
                 </div>
