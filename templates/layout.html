@@ -28,7 +28,7 @@
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Constructor</a>
                             <ul class="dropdown-menu">
-                                {% for constructor in render_inputs.constructors.values() %}
+                                {% for constructor in render_input.active_constructors.values() %}
                                     <li><a class="dropdown-item" href="{{constructor.route}}">{{constructor.name}}</a></li>
                                 {% endfor %}
                                 <li><hr class="dropdown-divider"></li>

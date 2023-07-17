@@ -6,9 +6,9 @@
 
 {% block tabs %}
     <ul class="nav nav-tabs nav-fill">
-        {% for constructor in render_inputs.constructors.values() %}
+        {% for constructor in render_input.active_constructors.values() %}
             <li class="nav-item">
-                <a {% if constructor.route == render_inputs.user_inputs[render_inputs.active_constructor].default_constructor.route %} class="nav-link active" aria-current="page" {% else %} class="nav-link" {% endif %} href="{{ constructor.route }}">{{ constructor.name }}</a>
+                <a {% if constructor.route == render_input.active_constructors[render_input.selected_constructor].route %} class="nav-link active" aria-current="page" {% else %} class="nav-link" {% endif %} href="{{ constructor.route }}">{{ constructor.name }}</a>
             </li>
         {% endfor %}
     </ul>
@@ -24,7 +24,7 @@
 {% endblock %}
 
 {% block body %}
-    <form action="/constructorRB" method="post">
+    <form action="{{render_input.active_constructors[render_input.selected_constructor].route}}" method="post">
         <!-- https://getbootstrap.com/docs/5.3/components/accordion/ -->
         <div class="accordion" id="accordionConstructor">
             <div class="accordion-item">
@@ -34,10 +34,14 @@
                 <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show">
                     <div class="accordion-body">
                         <div class="input-group w-50 mx-auto">
-                            <span class="input-group-text">Start Date</span>
-                            <input type="date" aria-label="StartDate" name="StartDate" class="form-control"> 
-                            <span class="input-group-text">End Date</span>
-                            <input type="date" aria-label="EndDate" name="EndDate" class="form-control"> 
+                            {% if render_input.active_inputs[render_input.selected_constructor].StartDate.show == True %}
+                                <span class="input-group-text">{{render_input.active_inputs[render_input.selected_constructor].StartDate.show_as}}</span>
+                                <input type="date" aria-label="StartDate" name="StartDate" class="form-control"> 
+                            {% endif %}
+                            {% if render_input.active_inputs[render_input.selected_constructor].EndDate.show == True %}
+                                <span class="input-group-text">{{render_input.active_inputs[render_input.selected_constructor].EndDate.show_as}}</span>
+                                <input type="date" aria-label="EndDate" name="EndDate" class="form-control"> 
+                            {% endif %}
                         </div>            
                     </div>
                 </div>
@@ -48,15 +52,17 @@
                 </h2>
                 <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse show">
                     <div class="accordion-body text-center">
-                        {% for ticker in range(render_inputs['portfolio_n']) %}
+                        {% for ticker in range(render_input['portfolio_size']) %}
                             <div class="input-group mb-3 w-75 mx-auto">
                                 <div class="input-group-text">
-                                    <input class="form-check-input mt-0" type="checkbox" name="AddTicker{{loop.index}}" aria-label="Checkbox for following text input" {% if loop.index <= render_inputs["checked_n"] %}checked{% endif %}>
+                                    <input class="form-check-input mt-0" type="checkbox" name="AddTicker{{loop.index}}" aria-label="Checkbox for following text input" {% if loop.index <= render_input["portfolio_checked"] %}checked{% endif %}>
                                 </div>    
-                                <span class="input-group-text">Ticker {{loop.index}}</span>
-                                <input type="text" aria-label="Ticker" placeholder="AAPL" name="Ticker{{loop.index}}" class="form-control">
-                                {% if render_inputs.user_inputs[render_inputs.active_constructor].Weight.show == True %}
-                                    <span class="input-group-text"> {{ render_inputs.user_inputs[render_inputs.active_constructor].Weight.show_as }} {{ loop.index }}</span>
+                                {% if render_input.active_inputs[render_input.selected_constructor].Ticker.show == True %}
+                                    <span class="input-group-text">{{render_input.active_inputs[render_input.selected_constructor].Ticker.show_as}} {{loop.index}}</span>
+                                    <input type="text" aria-label="Ticker" placeholder="AAPL" name="Ticker{{loop.index}}" class="form-control">
+                                {% endif %}
+                                {% if render_input.active_inputs[render_input.selected_constructor].Weight.show == True %}
+                                    <span class="input-group-text"> {{render_input.active_inputs[render_input.selected_constructor].Weight.show_as}} {{loop.index}}</span>
                                     <input type="number" aria-label="Weight" step="0.01" min="0" placeholder="0.10" class="form-control" name="Weight{{loop.index}}">
                                 {% endif %}
                             </div>
@@ -72,17 +78,17 @@
                     <div class="accordion-body">
                         <!-- https://getbootstrap.com/docs/5.3/forms/checks-radios/ -->
                         <div class="input-group w-75 mx-auto"> 
-                            {% if render_inputs.user_inputs[render_inputs.active_constructor].VolLookbackWindow.show == True %}
-                                <span class="input-group-text">{{render_inputs.user_inputs[render_inputs.active_constructor].VolLookbackWindow.show_as}}</span>
+                            {% if render_input.active_inputs[render_input.selected_constructor].VolLookbackWindow.show == True %}
+                                <span class="input-group-text">{{render_input.active_inputs[render_input.selected_constructor].VolLookbackWindow.show_as}}</span>
                                 <input type="number" aria-label="Volatility Lookback Window (Days)" name="VolLookbackWindow" class="form-control" step="1" min="1" placeholder="20"> 
                             {% endif %}
-                            {% if render_inputs.user_inputs[render_inputs.active_constructor].VolLookbackOffset.show == True %}
-                                <span class="input-group-text">{{render_inputs.user_inputs[render_inputs.active_constructor].VolLookbackOffset.show_as}}</span>
+                            {% if render_input.active_inputs[render_input.selected_constructor].VolLookbackOffset.show == True %}
+                                <span class="input-group-text">{{render_input.active_inputs[render_input.selected_constructor].VolLookbackOffset.show_as}}</span>
                                 <input type="number" aria-label="Volatility Lookback Offset (Days)" name="VolLookbackOffset" class="form-control" step="1" min="1" placeholder="1">
                             {% endif %}
                             <!-- https://getbootstrap.com/docs/5.3/forms/select/  -->
-                            {% if render_inputs.user_inputs[render_inputs.active_constructor].RebalFreq.show == True %}
-                                <span class="input-group-text">{{render_inputs.user_inputs[render_inputs.active_constructor].RebalFreq.show_as}}</span>
+                            {% if render_input.active_inputs[render_input.selected_constructor].RebalFreq.show == True %}
+                                <span class="input-group-text">{{render_input.active_inputs[render_input.selected_constructor].RebalFreq.show_as}}</span>
                                 <select class="form-select" aria-label="Rebalancing Frequency" name="RebalFreq">
                                     <option value="B" selected>Daily</option>
                                     <option value="Q">Quarterly</option>
@@ -90,8 +96,8 @@
                                     <option value="W">Weekly</option>
                                 </select>
                             {% endif %}
-                            {% if render_inputs.user_inputs[render_inputs.active_constructor].IgnoreMissing.show == True %}
-                                <span class="input-group-text">{{render_inputs.user_inputs[render_inputs.active_constructor].IgnoreMissing.show_as}}</span>
+                            {% if render_input.active_inputs[render_input.selected_constructor].IgnoreMissing.show == True %}
+                                <span class="input-group-text">{{render_input.active_inputs[render_input.selected_constructor].IgnoreMissing.show_as}}</span>
                                 <select class="form-select" aria-label="Ignore Missing" name="IgnoreMissing">
                                     <option value="False" selected>No</option>
                                     <option value="True">Yes</option>

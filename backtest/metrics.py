@@ -24,7 +24,7 @@ class Metrics:
 
         :param offset: day lag used to calculate returns, type: int
         '''
-        return np.average(np.log(self.ts[offset:]/self.ts[:-offset])) * np.sqrt(252/offset) # average annualised log return
+        return np.average(np.log(self.ts[offset:]/self.ts[:-offset])) * np.sqrt(252/offset) # Average annualised log return
 
 
     def get_vol(self, offset = 1):
@@ -33,7 +33,7 @@ class Metrics:
 
         :param offset: day lag used to calculate returns, type: int
         '''
-        return np.std(np.log(self.ts[offset:]/self.ts[:-offset])) * np.sqrt(252/offset) # annualised standard deviation of log returns 
+        return np.std(np.log(self.ts[offset:]/self.ts[:-offset])) * np.sqrt(252/offset) # Annualised standard deviation of log returns 
 
 
     def get_sharpe(self, offset = 1):
