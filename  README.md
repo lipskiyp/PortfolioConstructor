@@ -5,7 +5,11 @@ Portfolio Constructor is a Flask application designed to construct and backtest 
 
 ## Introduction 
 
-The app can be used to construct and backtest equity-portfolios using a range portfolio-construction techniques. Any ticker available on Yahoo Finance can be added to the portfolio and the backtest parameters (such as volatility lookback-window) can be manually adjusted. The resultant time-series is plotted inside the app using chart.js along with some financial metrics (e.g. Sharpe Ratio). The app let's the user export a csv file with the time-series for further analysis. All financial data is provided by Yahoo Finance, whcih is parsed from Yahoo Finance API.
+The app can be used to construct and backtest equity-portfolios using a range portfolio-construction techniques. Any ticker available on Yahoo Finance can be added to the portfolio and the backtest parameters (such as volatility lookback-window) can be manually adjusted. 
+
+The resultant time-series is plotted inside the app using chart.js along with some financial metrics (e.g. Sharpe Ratio). The app let's the user export a csv file with the time-series for further analysis. 
+
+All financial data is provided by Yahoo Finance, whcih is parsed from Yahoo Finance API.
 
 The 'About' page contains detailed methodologies for the construction techniques and the metrics.
 
@@ -25,18 +29,20 @@ $ pip3 install -r requirements.txt
 * input/ : contains the backend Python modules for user input checks
 * instance/ : contains the database instance 
 * models/ : contains the database model class definition 
-* quotes/ : contains backend Python modules for data queiries 
-* render_input/ : contains backened Python modules for input rendering
+* quotes/ : contains the backend Python modules for data queiries 
+* render_input/ : contains the parameters for template rendering
 * static/ : contains the frontend stylesheet file
 * templates/ : contains the frontend HTML files
 
 ## app.py 
 
-Flask application instance is initiated inside app.py file. All routes() accept HTTP 'GET' requests to generate URLs by rendering corresponding html templates. '/constructor/' route() supports both, 'GET' and 'POST' methods. Database management is implemented using Flask-SQLAlchemy extension. The SQLite database is configured via SQLALCHEMY_DATABASE_URI key and app is initialised with the SQLAlchemy extension. 
+Flask application instance is initiated inside the app.py file. All routes() accept HTTP 'GET' requests to generate URLs by rendering corresponding html templates. '/constructor/' route() supports both, 'GET' and 'POST' methods. 
+
+Database management is implemented using Flask-SQLAlchemy extension. The SQLite database is configured via SQLALCHEMY_DATABASE_URI key and app is initialised with the SQLAlchemy extension. 
 
 ## backtest/
 
-Base _Backtest class is defined inside backtest.py. The non-public class takes a single argument 'quotes' of type pandas.DataFrame and defines common features shared among the portfolio-construction techniques. In particular, .get_backtest() method returns the time-series for the backtest. 
+Base _Backtest class is defined inside the backtest.py file. The non-public class takes a single argument 'quotes' of type pandas.DataFrame and defines common features shared among the portfolio-construction techniques. In particular, .get_backtest() method returns the time-series for the backtest. 
 
 All backtests inherite the _Backtest behaviour and are defined inside backtests.py file. Some take additional arguments. Main distinguisher between the portfolio-constructors (i.e. backtests) is the get_weights(self) method that is used to calculate backtest weights using a specific technique (e.g. inverse-volatility weights).
 
@@ -48,9 +54,9 @@ SQLAlchemy extension is created inside db.py file.
 
 ## input/
 
-check_input() module inside check_input.py checks the user input for all 'shown' fields given a selected constructor. The module returns True/False if all of the user inputs are valid/invalid, as well as a list of errors incurred during the check. checks.py file contains all of the insidvidual 'check' modules for every user input. 
+check_input() module inside the check_input.py file checks all 'shown' user input fields given a selected constructor. The module returns True/False if all of the user inputs are valid/invalid, as well as a list of errors incurred during the check. checks.py file contains all of the insidvidual 'check' modules for every user input. 
 
-format_input() module inside the format_input.py file formats the user input from str to a required format for all of the 'shown' fields given a selected constructor. The module returns dict with all of the formatted inputs/None if user input was formatted successfully/failed to format, as well as a list of errors incurred during the formatting.
+format_input() module inside the format_input.py file formats the user input from str to a required format for all all 'shown' user input fields given a selected constructor. The module returns dict with all of the formatted inputs/None if user input was formatted successfully/failed to format, as well as a list of errors incurred during the formatting.
 
 ## instance/
 
