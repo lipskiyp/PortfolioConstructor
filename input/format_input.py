@@ -7,7 +7,7 @@ def format_input(user_input, render_input):
         
         :param user_input: user input dictionary, type: {}
         :param render_input: render input dictionary, type: {}
-        :return: dictionary with user input/ None if failed to convert, list of errors, type: {}/None, []
+        :return: dictionary with user input in correct format / None if failed to convert, list of errors, type: {}/None, []
         '''
 
         constructor = render_input['selected_constructor']

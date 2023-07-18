@@ -12,6 +12,7 @@ def check_input(user_input, render_input):
         :param render_input: render input dictionary, type: {}
         :return: True if all input valid / False if some are invalid, list of errors, type: bool, []
         '''
+        
         constructor = render_input['selected_constructor']
         
         # For every render input

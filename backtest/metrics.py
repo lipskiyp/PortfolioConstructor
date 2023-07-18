@@ -17,6 +17,18 @@ class Metrics:
         
         self.ts = ts.dropna().values
 
+    def get_all(self):
+        '''
+        Returns dictionary with all metrics
+        ''' 
+        metrics = {}
+        metrics['Avg. Return (Annualized)'] = f"{self.get_avgr():.2%}"
+        metrics['Volatility (Annualized)'] = f"{self.get_vol():.2%}" 
+        metrics['Sharpe Ratio'] = f"{self.get_sharpe():.1}" 
+        metrics['Maximum Drawdown'] = f"{self.get_maxdd():.2%}" 
+
+        return metrics
+
 
     def get_avgr(self, offset = 1):
         '''

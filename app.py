@@ -1,25 +1,16 @@
-'''
-THINGS TO ADD:
-
-Display interface + data export 
-Get Quotes Tab
-Methodology
-Metrics
-'''
-
 import sys
 sys.path.append('/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages')
 
-from flask import Flask, request, redirect, render_template, abort
+from flask import Flask, request, redirect, render_template
 from flask_session import Session
 
 from backtest.backtest_run import backtest_run
-from input.check_input import *
-from input.format_input import format_input
-from database.db import db
-from quotes.get_quotes import get_quotes
 from backtest.metrics import Metrics
-from render_input import render_input
+from database.db import db
+from input.check_input import check_input
+from input.format_input import format_input
+from quotes.get_quotes import get_quotes
+from render_input.render_input import render_input
 
 
 # Configure application
@@ -55,11 +46,6 @@ def index():
 
 @app.route('/about')
 def about():
-    quotes, errors = get_quotes(tickers = ['MSFT'], start = datetime.strptime('2023-06-01', '%Y-%m-%d'), end = datetime.strptime('2023-07-01', '%Y-%m-%d'))
-    print(errors)
-    print(quotes)
-    metrics = Metrics(quotes)
-    print(metrics.get_maxdd())
     return render_template('index.html',
                            render_input = render_input)
 
@@ -85,22 +71,22 @@ def constructor_all(constructor):
     
     if request.method == 'POST':
         # Check user input
-        check, errors = check_input(user_input = request.form, render_input = _render_input)
+        user_input_check, user_input_errors = check_input(user_input = request.form, render_input = _render_input)
  
         # If input is invalid
-        if check == False:
+        if user_input_check == False:
             return render_template('constructor.html', 
                                    render_input = _render_input,
-                                   errors = errors)
+                                   errors = user_input_errors)
         
         # Format user input
-        formated_user_input, errors = format_input(user_input = request.form, render_input = _render_input)
+        formated_user_input, format_input_errors = format_input(user_input = request.form, render_input = _render_input)
         
         # If could not format user input
         if formated_user_input is None:
             return render_template('constructor.html', 
                                    render_input = _render_input,
-                                   errors = errors)
+                                   errors = format_input_errors)
         
         # Get quotes
         quotes, quotes_errors = get_quotes(tickers = formated_user_input['Ticker'], 
@@ -113,25 +99,29 @@ def constructor_all(constructor):
                                    render_input = _render_input,
                                    errors = quotes_errors)
 
-        # Execute backtest
-        backtest, errors = backtest_run(user_input = formated_user_input, render_input = _render_input, quotes = quotes)
+        # Create backtest instance
+        backtest, backtest_errors = backtest_run(user_input = formated_user_input, render_input = _render_input, quotes = quotes)
 
         # If failed to construct backtest
         if backtest is None:
             return render_template('constructor.html', 
                                    render_input = _render_input,
-                                   errors = errors)
+                                   errors = backtest_errors)
         
         # Time series for backtest 
         backtest_ts = backtest.get_backtest() 
+        backtest_metrics = Metrics(quotes).get_all()
 
         # Render constructorDisplay template to show backtest
         return render_template('constructorDisplay.html', 
                                 render_input = _render_input,
+                                errors = quotes_errors,
                                 labels = list(backtest_ts.index.strftime('%d-%m-%Y').values), 
                                 values = list(backtest_ts.values), 
-                                errors = quotes_errors)   
+                                metrics = backtest_metrics)
 
     else: # if request.method == 'GET':
         return render_template('constructor.html',
                                render_input = _render_input)
+
+app.run(debug=True)

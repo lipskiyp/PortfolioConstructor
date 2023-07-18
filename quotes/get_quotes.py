@@ -54,7 +54,7 @@ def get_quotes(tickers, start, end):
 
 def add_missing(ticker, start, end):
     """ 
-    add_missing() adds missing quotes to Quotes.
+    add_missing() adds missing quotes to Quotes using add_yahoo() module.
     type: (str, datetime, datetime) -> (Bool, str[])
     
     :param ticker: ticker type: str (e.g. 'MSFT')

@@ -80,11 +80,11 @@
                         <div class="input-group w-75 mx-auto"> 
                             {% if render_input.active_inputs[render_input.selected_constructor].VolLookbackWindow.show == True %}
                                 <span class="input-group-text">{{render_input.active_inputs[render_input.selected_constructor].VolLookbackWindow.show_as}}</span>
-                                <input type="number" aria-label="Volatility Lookback Window (Days)" name="VolLookbackWindow" class="form-control" step="1" min="1" placeholder="20"> 
+                                <input type="number" aria-label="Volatility Lookback Window (Days)" name="VolLookbackWindow" class="form-control" step="1" min="1" value="20"> 
                             {% endif %}
                             {% if render_input.active_inputs[render_input.selected_constructor].VolLookbackOffset.show == True %}
                                 <span class="input-group-text">{{render_input.active_inputs[render_input.selected_constructor].VolLookbackOffset.show_as}}</span>
-                                <input type="number" aria-label="Volatility Lookback Offset (Days)" name="VolLookbackOffset" class="form-control" step="1" min="1" placeholder="1">
+                                <input type="number" aria-label="Volatility Lookback Offset (Days)" name="VolLookbackOffset" class="form-control" step="1" min="1" value="1">
                             {% endif %}
                             <!-- https://getbootstrap.com/docs/5.3/forms/select/  -->
                             {% if render_input.active_inputs[render_input.selected_constructor].RebalFreq.show == True %}
