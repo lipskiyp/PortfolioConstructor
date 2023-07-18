@@ -85,12 +85,12 @@ add_yahoo() module inside the get_yahoo.py file calls the get_yahoo() module to 
 
 render_input dictionary stores the parameters used to render the dynamic constructor.html template. 
 
-portfolio_size: determines the maximum number of tickers allowed in the portfolio (limits the number of 'ticker' inputs shown when the template is rendered)  
-portfolio_checked: determines the number of tickers pre-checked (selected) when the template is rendered  
-selected_constructor: determines the constructor for which the template is rendered (set to constructorFW as default)  
-active_constructors: determines the constructors accessible to the user  
-active_routes: determines the allowed routes for '/constructor/<route>' URLs  
-active_inputs: determines which inputs are shown for a selected constructor when the template is rendered  
+* portfolio_size: determines the maximum number of tickers allowed in the portfolio (limits the number of 'ticker' inputs shown when the template is rendered)  
+* portfolio_checked: determines the number of tickers pre-checked (selected) when the template is rendered  
+* selected_constructor: determines the constructor for which the template is rendered (set to constructorFW as default)  
+* active_constructors: determines the constructors accessible to the user  
+* active_routes: determines the allowed routes for '/constructor/<route>' URLs  
+* active_inputs: determines which inputs are shown for a selected constructor when the template is rendered  
 
 NB Only user inputs that are 'shown' inside the active_inputs dict will be checked and formatted when check_input() and format_input() modules are called.
 
