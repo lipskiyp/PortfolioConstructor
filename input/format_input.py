@@ -10,12 +10,12 @@ def format_input(user_input, render_input):
         :return: dictionary with user input in correct format / None if failed to convert, list of errors, type: {}/None, []
         '''
 
-        constructor = render_input['selected_constructor']
+        backtest = render_input['selected_backtest']
 
         formatted_user_input = {}
         
         # For every render input
-        for render_input_key, render_input_value in render_input['active_inputs'][constructor].items():   
+        for render_input_key, render_input_value in render_input['active_inputs'][backtest].items():   
             # If render input is shown
             if render_input_value['show'] == True:
                 formatted_user_input_item, error = format_all(user_input, render_input, render_input_key)

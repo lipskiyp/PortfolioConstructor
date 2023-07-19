@@ -5,13 +5,13 @@ Portfolio Constructor is a Flask application designed to construct and backtest 
 
 ## Introduction 
 
-The app can be used to construct and backtest equity-portfolios using a range portfolio-construction techniques. Any ticker available on Yahoo Finance can be added to the portfolio and the backtest parameters (such as volatility lookback-window) can be manually adjusted. 
+The app can be used to construct and backtest equity-portfolios using a range backtest techniques. Any ticker available on Yahoo Finance can be added to the portfolio and the backtest parameters (such as volatility lookback-window) can be manually adjusted. 
 
 The resultant time-series is plotted inside the app using chart.js along with some financial metrics (e.g. Sharpe Ratio). The app let's the user export a csv file with the time-series for further analysis. 
 
 All financial data is provided by Yahoo Finance, whcih is parsed from Yahoo Finance API.
 
-The 'About' page contains detailed methodologies for the construction techniques and the metrics.
+The 'About' page contains detailed methodologies for the different backtesting techniques and the metrics.
 
 ## Installation
 
@@ -36,15 +36,15 @@ $ pip3 install -r requirements.txt
 
 ## app.py 
 
-Flask application instance is initiated inside the app.py file. All routes() accept HTTP 'GET' requests. '/constructor/' route() supports both, 'GET' and 'POST' methods. 
+Flask application instance is initiated inside the app.py file. All routes() accept HTTP 'GET' requests. '/backtest/' route() supports both, 'GET' and 'POST' methods. 
 
 Database management is implemented using Flask-SQLAlchemy extension. The SQLite database is configured via SQLALCHEMY_DATABASE_URI key and the app is initialised with the SQLAlchemy extension. 
 
 ## backtest/
 
-Base _Backtest class is defined inside the backtest.py file. The non-public class takes a single argument 'quotes' of type pandas.DataFrame and defines common features shared among the portfolio-constructors (i.e. backtests). In particular, .get_backtest() method returns the time-series for the backtest. 
+Base _Backtest class is defined inside the backtest.py file. The non-public class takes a single argument 'quotes' of type pandas.DataFrame and defines common features shared among the portfolio-backtests (i.e. backtests). In particular, .get_backtest() method returns the time-series for the backtest. 
 
-All backtests inherite the _Backtest behaviour and are defined inside backtests.py file. Some take additional arguments. Main distinguisher between the portfolio-constructors is the get_weights(self) method that is used to calculate backtest weights using a specific technique (e.g. inverse-volatility weights).
+All backtests inherite the _Backtest behaviour and are defined inside backtests.py file. Some take additional arguments. Main distinguisher between the portfolio-backtests is the get_weights() method that is used to calculate backtest weights using a specific technique (e.g. inverse-volatility weights).
 
 Metrics class is defined inside the metrics.py file and is used provide further analysis on the time-series.
 
@@ -54,9 +54,9 @@ SQLAlchemy extension is created inside db.py file.
 
 ## input/
 
-check_input() module inside the check_input.py file checks all of the 'shown' user input fields for the selected constructor. The module returns True/False if all of the user inputs are valid/invalid, as well as a list of errors incurred during the check. checks.py file contains all of the insidvidual 'check' modules for every user input. 
+check_input() module inside the check_input.py file checks all of the 'shown' user input fields for the selected backtest. The module returns True/False if all of the user inputs are valid/invalid, as well as a list of errors incurred during the check. checks.py file contains all of the insidvidual 'check' modules for every user input. 
 
-format_input() module inside the format_input.py file formats the user input from str to a required format for all all 'shown' user input fields for the selected constructor.. The module returns dict with all of the formatted inputs/None if user input was formatted successfully/failed to format, as well as a list of errors incurred when formatting.
+format_input() module inside the format_input.py file formats the user input from str to a required format for all all 'shown' user input fields for the selected backtest.. The module returns dict with all of the formatted inputs/None if user input was formatted successfully/failed to format, as well as a list of errors incurred when formatting.
 
 ## instance/
 
@@ -83,14 +83,14 @@ add_yahoo() module inside the get_yahoo.py file calls the get_yahoo() module to 
 
 ## render_input/
 
-render_input dictionary stores the parameters used to render the dynamic constructor.html template. 
+Parameters used to render the dynamic backtest.html template are stored inside render_input dictionary. 
 
 * portfolio_size: determines the maximum number of tickers allowed in the portfolio (limits the number of 'ticker' inputs shown when the template is rendered)  
 * portfolio_checked: determines the number of tickers pre-checked (selected) when the template is rendered  
-* selected_constructor: determines the constructor for which the template is rendered (set to constructorFW as default)  
-* active_constructors: determines the constructors accessible to the user  
-* active_routes: determines the allowed routes for '/constructor/<route>' URLs  
-* active_inputs: determines which inputs are shown for a selected constructor when the template is rendered  
+* selected_backtest: determines the backtest for which the template is rendered (set to backtestFW as default)  
+* active_backtests: determines the backtests accessible to the user  
+* active_routes: determines the allowed routes for '/backtest/<route>' URLs  
+* active_inputs: determines which inputs are shown for a selected backtest when the template is rendered  
 
 NB Only user inputs that are 'shown' inside the active_inputs dict will be checked and formatted when check_input() and format_input() modules are called.
 
@@ -102,6 +102,6 @@ Contains the stylesheet style.css that is linked to the layout.html template.
 
 All of the html templates extend layout.html, which sets the general layout of the app and contains the navigation bar. 
 
-constructor.html is a dynamic template used to display input menue for the constructors. The template takes two arguments: render_input and errors. render_input determined the user inputs to be shown for a given constructor. Errors dispalys all of the errors incurred in the process of preparing and running the backtest below the navigation bar. 
+backtest.html is a dynamic template used to display input menue for the backtests. The template takes two arguments: render_input and errors. render_input determined the user inputs to be shown for a given backtest. Errors dispalys all of the errors incurred in the process of preparing and running the backtest below the navigation bar. 
 
-constructorDisplay.html template is used to display the backtest timeseries using chart.js, as well as a table of financial metrcis for the backtest. The template takes five arguments: render_input, errors, labels, values and metrics. 
+backtestDisplay.html template is used to display the backtest timeseries using chart.js, as well as a table of financial metrcis for the backtest. The template takes five arguments: render_input, errors, labels, values and metrics. 

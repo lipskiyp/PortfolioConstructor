@@ -50,24 +50,24 @@ def about():
                            render_input = render_input)
 
 
-@app.route('/constructor')
-def constructor():
-    # Render default constructor
-    return render_template('constructor.html', 
+@app.route('/backtest')
+def backtest():
+    # Render default backtest
+    return render_template('backtest.html', 
                             render_input = render_input)
 
 
-@app.route('/constructor/<path:constructor>', methods=['GET', 'POST'])
-def constructor_all(constructor):
-    route = f'/constructor/{constructor}'
+@app.route('/backtest/<path:backtest>', methods=['GET', 'POST'])
+def backtest_all(backtest):
+    route = f'/backtest/{backtest}'
 
-    # Redirect to /constructor if non-active route requested
+    # Redirect to /backtest if non-active route requested
     if route not in render_input['active_routes']:
-        return redirect('/constructor')
+        return redirect('/backtest')
     
-    # Copy render input with current constructor as selected constructor
+    # Copy render input with current backtest as selected backtest
     _render_input = render_input.copy()
-    _render_input['selected_constructor'] = constructor
+    _render_input['selected_backtest'] = backtest
     
     if request.method == 'POST':
         # Check user input
@@ -75,16 +75,16 @@ def constructor_all(constructor):
  
         # If input is invalid
         if user_input_check == False:
-            return render_template('constructor.html', 
+            return render_template('backtest.html', 
                                    render_input = _render_input,
                                    errors = user_input_errors)
         
         # Format user input
         formated_user_input, format_input_errors = format_input(user_input = request.form, render_input = _render_input)
-        
+        print(formated_user_input)
         # If could not format user input
         if formated_user_input is None:
-            return render_template('constructor.html', 
+            return render_template('backtest.html', 
                                    render_input = _render_input,
                                    errors = format_input_errors)
         
@@ -95,7 +95,7 @@ def constructor_all(constructor):
 
         # If failed to get any quotes
         if quotes is None:
-            return render_template('constructor.html', 
+            return render_template('backtest.html', 
                                    render_input = _render_input,
                                    errors = quotes_errors)
 
@@ -104,7 +104,7 @@ def constructor_all(constructor):
 
         # If failed to construct backtest
         if backtest is None:
-            return render_template('constructor.html', 
+            return render_template('backtest.html', 
                                    render_input = _render_input,
                                    errors = backtest_errors)
         
@@ -112,8 +112,8 @@ def constructor_all(constructor):
         backtest_ts = backtest.get_backtest() 
         backtest_metrics = Metrics(quotes).get_all()
 
-        # Render constructorDisplay template to show backtest
-        return render_template('constructorDisplay.html', 
+        # Render backtestDisplay template to show backtest
+        return render_template('backtestDisplay.html', 
                                 render_input = _render_input,
                                 errors = quotes_errors,
                                 labels = list(backtest_ts.index.strftime('%d-%m-%Y').values), 
@@ -121,7 +121,7 @@ def constructor_all(constructor):
                                 metrics = backtest_metrics)
 
     else: # if request.method == 'GET':
-        return render_template('constructor.html',
+        return render_template('backtest.html',
                                render_input = _render_input)
 
 app.run(debug=True)

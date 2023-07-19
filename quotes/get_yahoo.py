@@ -13,7 +13,7 @@ def add_yahoo(ticker, start, end):
     type: (str, datetime, datetime) -> (Bool, str[])
     
     :param ticker: ticker type: str (e.g. 'MSFT')
-    :param start: start date, type: datetime 
+    :param start: start date, type: datetime  
     :param end: end date, type: datetime
     :return: True if successful/False otherwise, list of erros
     """

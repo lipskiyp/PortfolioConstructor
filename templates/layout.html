@@ -17,7 +17,7 @@
         <!-- https://getbootstrap.com/docs/5.2/components/navbar/ -->
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container-fluid">
-                <a class="navbar-brand h1 mb-0" href="/constructor">Portfolio Constructor</a> 
+                <a class="navbar-brand h1 mb-0" href="/backtest">Portfolio Constructor</a> 
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -26,13 +26,13 @@
                         <li class="nav-item"><a class="nav-link" href="/">Main</a></li>
                         <li class="nav-item"><a class="nav-link" href="/about">About</a></li>
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Constructor</a>
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Backtest</a>
                             <ul class="dropdown-menu">
-                                {% for constructor in render_input.active_constructors.values() %}
-                                    <li><a class="dropdown-item" href="{{constructor.route}}">{{constructor.name}}</a></li>
+                                {% for backtest in render_input.active_backtests.values() %}
+                                    <li><a class="dropdown-item" href="{{backtest.route}}">{{backtest.name}}</a></li>
                                 {% endfor %}
                                 <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="/constructor">Constructor</a></li>
+                                <li><a class="dropdown-item" href="/backtest">Backtest</a></li>
                             </ul>
                         </li>
                     </ul>

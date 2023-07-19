@@ -39,7 +39,7 @@ def get_quotes(tickers, start, end):
                 quote['Date'] = pd.to_datetime(quote['Date'])
                 quote.set_index('Date', inplace = True)
 
-                # Concat quote with return DataFrame
+                # Concat quote with return DataFrame 
                 quotes = pd.concat([quotes, quote], axis=1)
 
             except:

@@ -13,10 +13,10 @@ def check_input(user_input, render_input):
         :return: True if all input valid / False if some are invalid, list of errors, type: bool, []
         '''
         
-        constructor = render_input['selected_constructor']
+        backtest = render_input['selected_backtest']
         
         # For every render input
-        for render_input_key, render_input_value in render_input['active_inputs'][constructor].items():
+        for render_input_key, render_input_value in render_input['active_inputs'][backtest].items():
         
             # If render input is shown
             if render_input_value['show'] == True:

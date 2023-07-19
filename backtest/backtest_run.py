@@ -2,7 +2,7 @@ from backtest.backtests import *
 
 def backtest_run(user_input, render_input, quotes):
         '''
-        backtest_run() returns an instance of a backtest for selected constructor
+        backtest_run() returns an instance of a backtest for selected backtest
         type: ({}, {}, pd.DataFrame) -> (backtest instance/None, [])
         
         :param user_input: user input dictionary, type: {}
@@ -11,23 +11,23 @@ def backtest_run(user_input, render_input, quotes):
         :return: backtest instance / None, list of errors, type: backtest instance/None, []
         '''
         
-        constructor = render_input['selected_constructor']
+        backtest = render_input['selected_backtest']
 
-        if constructor == 'constructorFW':
+        if backtest == 'FW':
             return backtestFW(quotes = quotes, 
                          weights = user_input['Weight'], 
                          ignore_missing = user_input['IgnoreMissing']), []
         
-        elif constructor == 'constructorIV':
+        elif backtest == 'IV':
             return backtestIV(quotes = quotes, 
                               vol_lookback_window = user_input['VolLookbackWindow'], 
                               vol_lookback_offset = user_input['VolLookbackOffset'], 
                               rebal_freq = user_input['RebalFreq'], 
                               ignore_missing = user_input['IgnoreMissing']), []
         
-        elif constructor == 'constructorRB':
+        elif backtest == 'RB':
             return backtestRB(quotes = quotes, 
-                      risk_budget = user_input['RiskBudgets'],
+                      risk_budget = user_input['Weight'],
                       vol_lookback_window = user_input['VolLookbackWindow'], 
                       vol_lookback_offset = user_input['VolLookbackOffset'], 
                       rebal_freq = user_input['RebalFreq'], 
