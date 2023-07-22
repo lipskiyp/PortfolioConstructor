@@ -44,12 +44,6 @@ def index():
                            render_input = render_input)
 
 
-@app.route('/about')
-def about():
-    return render_template('index.html',
-                           render_input = render_input)
-
-
 @app.route('/backtest')
 def backtest():
     # Render default backtest
@@ -81,7 +75,7 @@ def backtest_all(backtest):
         
         # Format user input
         formated_user_input, format_input_errors = format_input(user_input = request.form, render_input = _render_input)
-        print(formated_user_input)
+        
         # If could not format user input
         if formated_user_input is None:
             return render_template('backtest.html', 

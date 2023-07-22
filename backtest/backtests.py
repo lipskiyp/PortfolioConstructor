@@ -5,7 +5,7 @@ from backtest.backtest import _Backtest
 
 
 # Fixed Weights
-class backtestFW(_Backtest):
+class BacktestFW(_Backtest):
         '''
         Creates an insatnce of _Backtest with fixed-weights 
 
@@ -30,11 +30,11 @@ class backtestFW(_Backtest):
 
 
 # Risk-Budget weights
-class backtestRB(_Backtest): 
+class BacktestRB(_Backtest): 
         '''
         Creates an insatnce of _Backtest with risk-budget/vol weights (using rolling returns), allows leverage 
 
-        :param risk_budget: list of risk-budgets, type: int[]
+        :param risk_budget: list of risk-budgets, type: float[]
         :param vol_lookback_offset: bdays to offset vol-window, type: int >= 1
         :param vol_lookback_window: window used to calculate vol, type: int >= 1
         :param rebal_freq: weight rebalance frequency ['Q', 'M', 'W', 'B' etc.], type: str
@@ -63,7 +63,7 @@ class backtestRB(_Backtest):
 
 
 # Inverse-Vol weights
-class backtestIV(backtestRB):
+class BacktestIV(BacktestRB):
         '''
         NB backtestIV is a special case of backtestRB with equal risk-budgets that sum to 1
         '''

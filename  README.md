@@ -7,11 +7,9 @@ Portfolio Constructor is a Flask application designed to construct and backtest 
 
 The app can be used to construct and backtest equity-portfolios using a range backtest techniques. Any ticker available on Yahoo Finance can be added to the portfolio and the backtest parameters (such as volatility lookback-window) can be manually adjusted. 
 
-The resultant time-series is plotted inside the app using chart.js along with some financial metrics (e.g. Sharpe Ratio). The app let's the user export a csv file with the time-series for further analysis. 
+The resultant time-series is plotted inside the app using chart.js along with some financial metrics (e.g. Sharpe Ratio). 
 
 All financial data is provided by Yahoo Finance, whcih is parsed from Yahoo Finance API.
-
-The 'About' page contains detailed methodologies for the different backtesting techniques and the metrics.
 
 ## Installation
 

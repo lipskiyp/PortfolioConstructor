@@ -14,24 +14,24 @@ def backtest_run(user_input, render_input, quotes):
         backtest = render_input['selected_backtest']
 
         if backtest == 'FW':
-            return backtestFW(quotes = quotes, 
-                         weights = user_input['Weight'], 
-                         ignore_missing = user_input['IgnoreMissing']), []
-        
+            return BacktestFW(quotes = quotes, 
+                                weights = user_input['Weight'], 
+                                ignore_missing = user_input['IgnoreMissing']), []
+                
         elif backtest == 'IV':
-            return backtestIV(quotes = quotes, 
+            return BacktestIV(quotes = quotes, 
                               vol_lookback_window = user_input['VolLookbackWindow'], 
                               vol_lookback_offset = user_input['VolLookbackOffset'], 
                               rebal_freq = user_input['RebalFreq'], 
                               ignore_missing = user_input['IgnoreMissing']), []
         
         elif backtest == 'RB':
-            return backtestRB(quotes = quotes, 
-                      risk_budget = user_input['Weight'],
-                      vol_lookback_window = user_input['VolLookbackWindow'], 
-                      vol_lookback_offset = user_input['VolLookbackOffset'], 
-                      rebal_freq = user_input['RebalFreq'], 
-                      ignore_missing = user_input['IgnoreMissing']), []
+            return BacktestRB(quotes = quotes, 
+                                risk_budget = user_input['Weight'],
+                                vol_lookback_window = user_input['VolLookbackWindow'], 
+                                vol_lookback_offset = user_input['VolLookbackOffset'], 
+                                rebal_freq = user_input['RebalFreq'], 
+                                ignore_missing = user_input['IgnoreMissing']), []
         
         else:
             return None, ['Failed to construct backtest']
