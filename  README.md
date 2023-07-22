@@ -1,13 +1,11 @@
 # Flask Portfolio Constructor 
-#### Video Demo:  <URL HERE>
+#### Video Demo:  <URL https://www.youtube.com/watch?v=kCdlH_R10NI>
 
 Portfolio Constructor is a Flask application designed to construct and backtest equity portfolios.
 
 ## Introduction 
 
-The app can be used to construct and backtest equity-portfolios using a range backtest techniques. Any ticker available on Yahoo Finance can be added to the portfolio and the backtest parameters (such as volatility lookback-window) can be manually adjusted. 
-
-The resultant time-series is plotted inside the app using chart.js along with some financial metrics (e.g. Sharpe Ratio). 
+The app can be used to construct and backtest equity-portfolios using a range backtest techniques. Any ticker available on Yahoo Finance can be added to the portfolio and the backtest parameters (such as volatility lookback-window) can be manually adjusted. The time-series for the resultant backtest is plotted inside the app using chart.js along with some financial metrics (e.g. Sharpe Ratio). 
 
 All financial data is provided by Yahoo Finance, whcih is parsed from Yahoo Finance API.
 
@@ -40,7 +38,7 @@ Database management is implemented using Flask-SQLAlchemy extension. The SQLite 
 
 ## backtest/
 
-Base _Backtest class is defined inside the backtest.py file. The non-public class takes a single argument 'quotes' of type pandas.DataFrame and defines common features shared among the portfolio-backtests (i.e. backtests). In particular, .get_backtest() method returns the time-series for the backtest. 
+Base _Backtest class is defined inside the backtest.py file. The non-public class takes a single argument 'quotes' of type pandas.DataFrame and defines common features shared among the portfolio-backtests. In particular, .get_backtest() method returns the time-series for the backtest. 
 
 All backtests inherite the _Backtest behaviour and are defined inside backtests.py file. Some take additional arguments. Main distinguisher between the portfolio-backtests is the get_weights() method that is used to calculate backtest weights using a specific technique (e.g. inverse-volatility weights).
 
