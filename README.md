@@ -1,5 +1,4 @@
 # Flask Portfolio Constructor 
-#### Video Demo:  <URL https://www.youtube.com/watch?v=kCdlH_R10NI>
 
 Portfolio Constructor is a Flask application designed to construct and backtest equity portfolios.
 
